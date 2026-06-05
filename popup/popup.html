@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资源嗅探下载器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 头部 -->
+    <header class="header">
+      <div class="header-top">
+        <h1 class="title">
+          <span class="icon">🔍</span>
+          资源嗅探下载器
+        </h1>
+        <div class="header-actions">
+          <button id="btnSettings" class="btn-icon" title="设置">⚙️</button>
+          <button id="btnRefresh" class="btn-icon" title="刷新">🔄</button>
+          <button id="btnClear" class="btn-icon" title="清除">🗑️</button>
+        </div>
+      </div>
+
+      <!-- 浏览器信息 -->
+      <div class="browser-info">
+        <span id="browserIcon" class="browser-icon">🌐</span>
+        <span id="browserName" class="browser-name">检测中...</span>
+        <span id="browserVersion" class="browser-version"></span>
+      </div>
+
+      <!-- 统计信息 -->
+      <div class="statistics">
+        <span id="totalCount" class="stat-item">总数: 0</span>
+        <span id="selectedCount" class="stat-item">已选: 0</span>
+        <span id="downloadCount" class="stat-item">下载: 0</span>
+      </div>
+    </header>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+      <div class="filter-types">
+        <button class="filter-btn active" data-type="all">全部</button>
+        <button class="filter-btn" data-type="video">🎬 视频</button>
+        <button class="filter-btn" data-type="audio">🎵 音频</button>
+        <button class="filter-btn" data-type="image">🖼️ 图片</button>
+        <button class="filter-btn" data-type="document">📄 文档</button>
+        <button class="filter-btn" data-type="archive">📦 压缩包</button>
+      </div>
+      <div class="filter-search">
+        <input type="text" id="searchInput" placeholder="搜索资源..." />
+      </div>
+    </div>
+
+    <!-- 资源列表 -->
+    <div class="resource-list-container">
+      <div class="resource-list-header">
+        <label class="checkbox-label">
+          <input type="checkbox" id="selectAll" />
+          全选
+        </label>
+        <div class="sort-controls">
+          <select id="sortBy">
+            <option value="time">按时间</option>
+            <option value="size">按大小</option>
+            <option value="name">按名称</option>
+            <option value="type">按类型</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="resourceList" class="resource-list">
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-text">暂未检测到资源</div>
+          <div class="empty-hint">请浏览网页内容，资源将自动检测</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部操作栏 -->
+    <footer class="footer">
+      <div class="footer-left">
+        <button id="btnDownloadSelected" class="btn btn-primary" disabled>
+          <span class="btn-icon">⬇️</span>
+          下载选中
+        </button>
+        <button id="btnPreview" class="btn btn-secondary" disabled>
+          <span class="btn-icon">👁️</span>
+          预览
+        </button>
+      </div>
+      <div class="footer-right">
+        <button id="btnDownloadAll" class="btn btn-secondary">
+          <span class="btn-icon">📥</span>
+          下载全部
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 预览模态框 -->
+  <div id="previewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="previewTitle" class="modal-title">资源预览</h3>
+        <button id="btnClosePreview" class="btn-close">&times;</button>
+      </div>
+      <div id="previewBody" class="modal-body">
+        <!-- 预览内容将在这里动态生成 -->
+      </div>
+      <div class="modal-footer">
+        <button id="btnDownloadPreview" class="btn btn-primary">
+          <span class="btn-icon">⬇️</span>
+          下载
+        </button>
+        <button id="btnClosePreviewFooter" class="btn btn-secondary">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 下载进度模态框 -->
+  <div id="downloadModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">下载进度</h3>
+        <button id="btnCloseDownload" class="btn-close">&times;</button>
+      </div>
+      <div id="downloadBody" class="modal-body">
+        <div class="download-progress">
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div id="progressText" class="progress-text">准备下载...</div>
+        </div>
+        <div id="downloadList" class="download-list">
+          <!-- 下载列表将在这里动态生成 -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelDownload" class="btn btn-danger">取消下载</button>
+        <button id="btnCloseDownloadFooter" class="btn btn-secondary">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "资源嗅探下载器",
+    "description": "插件名称"
+  },
+  "extensionDescription": {
+    "message": "智能嗅探网页中的视频、音频、图片等资源，支持预览和批量下载",
+    "description": "插件描述"
+  }
+}

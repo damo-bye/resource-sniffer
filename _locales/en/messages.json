@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Resource Sniffer Downloader",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Smart detection of videos, audios, images and other resources in web pages, with preview and batch download support",
+    "description": "Extension description"
+  }
+}

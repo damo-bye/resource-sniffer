@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成插件图标</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .icon-preview {
+      text-align: center;
+    }
+
+    .icon-preview canvas {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .icon-preview p {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .controls {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    button.secondary {
+      background: #2196F3;
+    }
+
+    button.secondary:hover {
+      background: #1976D2;
+    }
+
+    .instructions {
+      background: #e8f5e9;
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .instructions h3 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+
+    .instructions ol {
+      margin-bottom: 0;
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .instructions code {
+      background: #c8e6c9;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 生成插件图标</h1>
+
+  <div class="container">
+    <div class="instructions">
+      <h3>使用说明</h3>
+      <ol>
+        <li>点击"生成图标"按钮预览图标效果</li>
+        <li>点击"下载图标"按钮下载所有尺寸的图标</li>
+        <li>将下载的图标文件放入插件的 <code>icons</code> 目录</li>
+        <li>重新加载插件即可看到新图标</li>
+      </ol>
+    </div>
+
+    <div class="controls">
+      <button id="btnGenerate">🎨 生成图标</button>
+      <button id="btnDownload" class="secondary">⬇️ 下载图标</button>
+    </div>
+
+    <div id="preview" class="preview">
+      <!-- 图标预览将在这里显示 -->
+    </div>
+  </div>
+
+  <script>
+    const ICON_SIZES = [16, 32, 48, 128];
+
+    // 生成图标
+    function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // 计算缩放比例
+      const scale = size / 128;
+
+      // 背景圆形
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4CAF50');
+      gradient.addColorStop(1, '#2196F3');
+
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 - 2*scale, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2 * scale;
+      ctx.stroke();
+
+      // 搜索图标
+      ctx.beginPath();
+      ctx.arc(size * 0.4, size * 0.4, size * 0.15, 0, Math.PI * 2);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3 * scale;
+      ctx.stroke();
+
+      // 搜索手柄
+      ctx.beginPath();
+      ctx.moveTo(size * 0.52, size * 0.52);
+      ctx.lineTo(size * 0.65, size * 0.65);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3 * scale;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // 下载箭头
+      ctx.beginPath();
+      ctx.moveTo(size * 0.5, size * 0.6);
+      ctx.lineTo(size * 0.5, size * 0.8);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3 * scale;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // 箭头头部
+      ctx.beginPath();
+      ctx.moveTo(size * 0.38, size * 0.7);
+      ctx.lineTo(size * 0.5, size * 0.8);
+      ctx.lineTo(size * 0.62, size * 0.7);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3 * scale;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      return canvas;
+    }
+
+    // 生成所有尺寸的图标
+    function generateAllIcons() {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+
+      ICON_SIZES.forEach(size => {
+        const canvas = generateIcon(size);
+        const div = document.createElement('div');
+        div.className = 'icon-preview';
+        div.appendChild(canvas);
+
+        const p = document.createElement('p');
+        p.textContent = `${size}x${size}`;
+        div.appendChild(p);
+
+        preview.appendChild(div);
+      });
+    }
+
+    // 下载图标
+    function downloadIcons() {
+      ICON_SIZES.forEach(size => {
+        const canvas = generateIcon(size);
+        const link = document.createElement('a');
+        link.download = `icon${size}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    // 绑定事件
+    document.getElementById('btnGenerate').addEventListener('click', generateAllIcons);
+    document.getElementById('btnDownload').addEventListener('click', downloadIcons);
+
+    // 自动生成预览
+    generateAllIcons();
+  </script>
+</body>
+</html>

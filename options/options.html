@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资源嗅探下载器 - 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">
+          <span class="icon">⚙️</span>
+          资源嗅探下载器 - 设置
+        </h1>
+        <p class="subtitle">自定义插件的行为和外观</p>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- 浏览器信息 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">🌐</span>
+          浏览器信息
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">当前浏览器</label>
+              <p class="setting-description" id="browserInfoDisplay">检测中...</p>
+            </div>
+            <div class="setting-control">
+              <span id="browserIconDisplay" style="font-size: 24px;">🌐</span>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">兼容性状态</label>
+              <p class="setting-description" id="compatibilityStatus">检测中...</p>
+            </div>
+            <div class="setting-control">
+              <span id="compatibilityIcon" style="font-size: 20px;">⏳</span>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">浏览器特定注意事项</label>
+              <div class="setting-description">
+                <ul id="browserNotes" style="margin: 8px 0; padding-left: 20px;">
+                  <li>检测中...</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 嗅探设置 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">🔍</span>
+          嗅探设置
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="snifferEnabled">启用资源嗅探</label>
+              <p class="setting-description">开启后将自动检测网页中的可下载资源</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="snifferEnabled" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">检测的资源类型</label>
+              <p class="setting-description">选择要检测的资源类型</p>
+            </div>
+            <div class="setting-control">
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" id="detectVideo" checked>
+                  <span>🎬 视频</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="detectAudio" checked>
+                  <span>🎵 音频</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="detectImage" checked>
+                  <span>🖼️ 图片</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="detectDocument" checked>
+                  <span>📄 文档</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="detectArchive" checked>
+                  <span>📦 压缩包</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="minFileSize">最小文件大小 (KB)</label>
+              <p class="setting-description">忽略小于此大小的文件，0 表示不限制</p>
+            </div>
+            <div class="setting-control">
+              <input type="number" id="minFileSize" class="input-number" value="0" min="0">
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="maxFileSize">最大文件大小 (MB)</label>
+              <p class="setting-description">忽略大于此大小的文件，0 表示不限制</p>
+            </div>
+            <div class="setting-control">
+              <input type="number" id="maxFileSize" class="input-number" value="0" min="0">
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="smallFileThreshold">忽略小文件阈值 (字节)</label>
+              <p class="setting-description">自动忽略小于此大小的文件（如图标、跟踪像素等）</p>
+            </div>
+            <div class="setting-control">
+              <input type="number" id="smallFileThreshold" class="input-number" value="1024" min="0">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 下载设置 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">⬇️</span>
+          下载设置
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="savePath">保存路径</label>
+              <p class="setting-description">下载文件的保存位置，留空使用浏览器默认路径</p>
+            </div>
+            <div class="setting-control">
+              <input type="text" id="savePath" class="input-text" placeholder="例如: downloads/resources">
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="maxConcurrentDownloads">最大并发下载数</label>
+              <p class="setting-description">同时下载的最大文件数量</p>
+            </div>
+            <div class="setting-control">
+              <input type="number" id="maxConcurrentDownloads" class="input-number" value="3" min="1" max="10">
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="showSaveDialog">显示保存对话框</label>
+              <p class="setting-description">下载前显示"另存为"对话框</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="showSaveDialog">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="retryOnFail">下载失败时重试</label>
+              <p class="setting-description">下载失败后自动重试</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="retryOnFail" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="maxRetries">最大重试次数</label>
+              <p class="setting-description">下载失败后的最大重试次数</p>
+            </div>
+            <div class="setting-control">
+              <input type="number" id="maxRetries" class="input-number" value="3" min="0" max="10">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 界面设置 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">🎨</span>
+          界面设置
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="theme">主题</label>
+              <p class="setting-description">选择插件的外观主题</p>
+            </div>
+            <div class="setting-control">
+              <select id="theme" class="select">
+                <option value="light">浅色</option>
+                <option value="dark">深色</option>
+                <option value="auto">跟随系统</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="language">语言</label>
+              <p class="setting-description">选择插件的显示语言</p>
+            </div>
+            <div class="setting-control">
+              <select id="language" class="select">
+                <option value="zh_CN">简体中文</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="showNotifications">显示通知</label>
+              <p class="setting-description">下载完成或失败时显示系统通知</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="showNotifications" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="showBadge">显示徽章</label>
+              <p class="setting-description">在插件图标上显示检测到的资源数量</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="showBadge" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label" for="compactMode">紧凑模式</label>
+              <p class="setting-description">使用更紧凑的界面布局</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle">
+                <input type="checkbox" id="compactMode">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 过滤设置 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">🚫</span>
+          过滤设置
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">阻止的域名</label>
+              <p class="setting-description">不检测这些域名下的资源（每行一个）</p>
+            </div>
+            <div class="setting-control">
+              <textarea id="blockedDomains" class="textarea" rows="4" placeholder="例如:&#10;google-analytics.com&#10;facebook.com&#10;twitter.com"></textarea>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">自定义过滤规则</label>
+              <p class="setting-description">使用正则表达式过滤资源 URL（每行一个）</p>
+            </div>
+            <div class="setting-control">
+              <textarea id="customFilters" class="textarea" rows="4" placeholder="例如:&#10;/advertisement/&#10;/tracking/&#10;/analytics/"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 数据管理 -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <span class="section-icon">💾</span>
+          数据管理
+        </h2>
+        <div class="section-content">
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">导出设置</label>
+              <p class="setting-description">将当前设置导出为 JSON 文件</p>
+            </div>
+            <div class="setting-control">
+              <button id="btnExport" class="btn btn-secondary">导出设置</button>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">导入设置</label>
+              <p class="setting-description">从 JSON 文件导入设置</p>
+            </div>
+            <div class="setting-control">
+              <input type="file" id="importFile" accept=".json" style="display: none;">
+              <button id="btnImport" class="btn btn-secondary">导入设置</button>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">清除下载历史</label>
+              <p class="setting-description">清除所有下载历史记录</p>
+            </div>
+            <div class="setting-control">
+              <button id="btnClearHistory" class="btn btn-danger">清除历史</button>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label class="setting-label">重置设置</label>
+              <p class="setting-description">将所有设置恢复为默认值</p>
+            </div>
+            <div class="setting-control">
+              <button id="btnReset" class="btn btn-danger">重置设置</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>资源嗅探下载器 v1.0.0</p>
+          <p class="footer-links">
+            <a href="#" id="btnHelp">帮助</a>
+            <span class="separator">|</span>
+            <a href="#" id="btnFeedback">反馈</a>
+          </p>
+        </div>
+        <div class="footer-actions">
+          <button id="btnSave" class="btn btn-primary">保存设置</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 通知 -->
+  <div id="notification" class="notification"></div>
+
+  <script src="options.js" type="module"></script>
+</body>
+</html>

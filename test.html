@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资源嗅探下载器 - 测试页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4CAF50, #2196F3);
+      color: white;
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      font-size: 20px;
+      color: #4CAF50;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .section p {
+      margin-bottom: 16px;
+      color: #666;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .resource-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .resource-card:hover {
+      border-color: #4CAF50;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    }
+
+    .resource-card .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .resource-card h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .resource-card p {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      margin: 16px 0;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .audio-container {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .audio-container audio {
+      width: 100%;
+    }
+
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .image-gallery img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s;
+    }
+
+    .image-gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .download-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.3s;
+    }
+
+    .download-link:hover {
+      background: #4CAF50;
+      color: white;
+      border-color: #4CAF50;
+    }
+
+    .download-link .icon {
+      font-size: 18px;
+    }
+
+    .instructions {
+      background: #e8f5e9;
+      border-left: 4px solid #4CAF50;
+      padding: 16px;
+      margin: 16px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .instructions h4 {
+      color: #2e7d32;
+      margin-bottom: 8px;
+    }
+
+    .instructions ol {
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 4px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-indicator.active {
+      background: #4CAF50;
+      animation: pulse 2s infinite;
+    }
+
+    .status-indicator.inactive {
+      background: #f44336;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 资源嗅探下载器 - 测试页面</h1>
+      <p>使用此页面测试插件的各项功能</p>
+    </header>
+
+    <!-- 测试说明 -->
+    <div class="section">
+      <h2>📋 测试说明</h2>
+      <div class="instructions">
+        <h4>如何使用此测试页面</h4>
+        <ol>
+          <li>确保插件已正确安装并启用</li>
+          <li>刷新此页面以加载所有测试资源</li>
+          <li>点击浏览器工具栏中的插件图标</li>
+          <li>查看是否检测到页面中的各种资源</li>
+          <li>测试下载和预览功能</li>
+        </ol>
+      </div>
+      <p>
+        <span class="status-indicator active"></span>
+        <strong>插件状态</strong>：请查看插件图标是否显示在工具栏中
+      </p>
+    </div>
+
+    <!-- 视频测试 -->
+    <div class="section">
+      <h2>🎬 视频资源测试</h2>
+      <p>以下视频应该被插件检测到：</p>
+
+      <div class="video-container">
+        <video controls>
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          您的浏览器不支持视频标签
+        </video>
+      </div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到 MP4 视频，以及是否支持预览播放
+      </p>
+    </div>
+
+    <!-- 音频测试 -->
+    <div class="section">
+      <h2>🎵 音频资源测试</h2>
+      <p>以下音频应该被插件检测到：</p>
+
+      <div class="audio-container">
+        <audio controls>
+          <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+          您的浏览器不支持音频标签
+        </audio>
+      </div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到 MP3 音频，以及是否支持预览播放
+      </p>
+    </div>
+
+    <!-- 图片测试 -->
+    <div class="section">
+      <h2>🖼️ 图片资源测试</h2>
+      <p>以下图片应该被插件检测到：</p>
+
+      <div class="image-gallery">
+        <img src="https://picsum.photos/300/200?random=1" alt="测试图片 1">
+        <img src="https://picsum.photos/300/200?random=2" alt="测试图片 2">
+        <img src="https://picsum.photos/300/200?random=3" alt="测试图片 3">
+        <img src="https://picsum.photos/300/200?random=4" alt="测试图片 4">
+      </div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到所有图片，以及是否支持预览查看
+      </p>
+    </div>
+
+    <!-- 下载链接测试 -->
+    <div class="section">
+      <h2>📥 下载链接测试</h2>
+      <p>以下下载链接应该被插件检测到：</p>
+
+      <div class="download-links">
+        <a href="https://www.w3schools.com/html/mov_bbb.mp4" class="download-link">
+          <span class="icon">🎬</span>
+          下载视频 (MP4)
+        </a>
+        <a href="https://www.w3schools.com/html/horse.mp3" class="download-link">
+          <span class="icon">🎵</span>
+          下载音频 (MP3)
+        </a>
+        <a href="https://picsum.photos/800/600" class="download-link">
+          <span class="icon">🖼️</span>
+          下载图片 (JPG)
+        </a>
+        <a href="https://www.w3schools.com/html/mov_bbb.webm" class="download-link">
+          <span class="icon">🎬</span>
+          下载视频 (WebM)
+        </a>
+      </div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到下载链接，以及是否支持批量下载
+      </p>
+    </div>
+
+    <!-- 动态内容测试 -->
+    <div class="section">
+      <h2>🔄 动态内容测试</h2>
+      <p>点击按钮动态加载资源，测试插件是否能检测到动态添加的内容：</p>
+
+      <button id="btnLoadDynamic" style="
+        background: #2196F3;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 16px 0;
+      ">
+        加载动态资源
+      </button>
+
+      <div id="dynamicContent"></div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到 JavaScript 动态加载的资源
+      </p>
+    </div>
+
+    <!-- 背景图片测试 -->
+    <div class="section">
+      <h2>🎨 背景图片测试</h2>
+      <p>以下元素使用了背景图片，应该被插件检测到：</p>
+
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 16px 0;
+      ">
+        <div style="
+          height: 150px;
+          background: url('https://picsum.photos/400/300?random=5') center/cover;
+          border-radius: 8px;
+        "></div>
+        <div style="
+          height: 150px;
+          background: url('https://picsum.photos/400/300?random=6') center/cover;
+          border-radius: 8px;
+        "></div>
+        <div style="
+          height: 150px;
+          background: url('https://picsum.photos/400/300?random=7') center/cover;
+          border-radius: 8px;
+        "></div>
+      </div>
+
+      <p>
+        <strong>测试要点</strong>：
+        检查插件是否能检测到 CSS 背景图片
+      </p>
+    </div>
+
+    <!-- 测试结果 -->
+    <div class="section">
+      <h2>✅ 测试检查清单</h2>
+      <p>完成以下检查项以验证插件功能：</p>
+
+      <div style="margin: 16px 0;">
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          插件图标显示在工具栏中
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          点击图标能打开弹窗界面
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到视频资源
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到音频资源
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到图片资源
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到下载链接
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到动态加载的资源
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          检测到背景图片
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          资源预览功能正常
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          单个下载功能正常
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          批量下载功能正常
+        </label>
+        <label style="display: block; margin-bottom: 8px;">
+          <input type="checkbox" style="margin-right: 8px;">
+          筛选和搜索功能正常
+        </label>
+      </div>
+    </div>
+
+    <footer>
+      <p>资源嗅探下载器 v1.0.0 - 测试页面</p>
+      <p>如遇问题，请查看 <a href="INSTALL.md" style="color: #4CAF50;">安装指南</a> 或 <a href="README.md" style="color: #4CAF50;">使用说明</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // 动态加载资源测试
+    document.getElementById('btnLoadDynamic').addEventListener('click', function() {
+      const container = document.getElementById('dynamicContent');
+      container.innerHTML = `
+        <div style="margin-top: 16px; padding: 16px; background: #f9f9f9; border-radius: 8px;">
+          <h4 style="margin-bottom: 12px;">动态加载的资源：</h4>
+
+          <div style="margin-bottom: 16px;">
+            <video controls style="width: 100%; max-width: 400px;">
+              <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <img src="https://picsum.photos/400/300?random=8" alt="动态图片" style="max-width: 100%; border-radius: 4px;">
+          </div>
+
+          <div>
+            <audio controls style="width: 100%;">
+              <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg">
+            </audio>
+          </div>
+        </div>
+      `;
+
+      this.disabled = true;
+      this.textContent = '已加载';
+      this.style.background = '#9E9E9E';
+    });
+  </script>
+</body>
+</html>
